@@ -55,7 +55,7 @@ public class TopClass implements ActionListener, KeyListener {
     private int whaleYTracker = SCREEN_HEIGHT/2 - WHALE_HEIGHT;
     //빌드 완료 객체
     private Object buildComplete = new Object();
-
+    private Object rebuildComplete = new Object();
     //지역 스윙 객체
     private JFrame f = new JFrame("Whale Adventures");//프라임 생성 타이틀은 "Whale Adventures"
     private JButton startGame,restartGame;//게임 시작 버튼
@@ -137,7 +137,7 @@ public class TopClass implements ActionListener, KeyListener {
     }
     private void setRestartGame(){
         //게임 다시 시작 버튼
-        restartGame = new JButton("Start");
+        restartGame = new JButton("ReStart");
         restartGame.setHorizontalAlignment(JButton.CENTER);
 
         //버튼 색깔 설정
@@ -150,7 +150,6 @@ public class TopClass implements ActionListener, KeyListener {
         //버튼 위치 설정
         restartGame.setAlignmentX(0.5f); //가로(X)
         restartGame.setAlignmentY(0.6f); //세로(O)
-        //현제 리스너의 리벤트 실행;
     }
 
     //작업 이벤트 구현
