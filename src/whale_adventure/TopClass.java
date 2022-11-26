@@ -7,10 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.OverlayLayout;
+import javax.swing.*;
 
 public class TopClass implements ActionListener, KeyListener {
 
@@ -22,26 +19,26 @@ public class TopClass implements ActionListener, KeyListener {
     private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();   //넓이 구성 코드
     private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();   //높이 구성 코드
     //파이프 사이의 거리(단위 : px)
-    private static final int SEAWEED_GAP = SCREEN_HEIGHT/5;
+    private static final int SEAWEED_GAP = SCREEN_HEIGHT/4;
     //파이프 크기(단위 : px)
-    private static final int SEAWEED_WIDTH = SCREEN_WIDTH/8, SEAWEED_HEIGHT = 4* SEAWEED_WIDTH;
-    //새크기(단위 : px)
-    private static final int WHALE_WIDTH = 120, WHALE_HEIGHT = 75;
+    private static final int SEAWEED_WIDTH = SCREEN_WIDTH/6, SEAWEED_HEIGHT = 3* SEAWEED_WIDTH;
+    //고래크기(단위 : px)
+    private static final int WHALE_WIDTH = 140, WHALE_HEIGHT = 120;
     //물고기 크기
-    private static final int FISH_WIDTH = 50, FISH_HEIGHT = 50;
+    private static final int FISH_WIDTH = 60, FISH_HEIGHT = 60;
     //업데이트 간격(ms)
-    private static final int UPDATE_DIFFERENCE = 25;
+    private static final int UPDATE_DIFFERENCE = 18;
     //업데이트할 때마다 파이프가 이동하는 거리
-    private static final int X_MOVEMENT_DIFFERENCE = 5;
+    private static final int X_MOVEMENT_DIFFERENCE = 8;
     //로드 시간이 길기 때문에 파이프가 화면 중간에 팝업됩니다.
     private static final int SCREEN_DELAY = 300;
-    //새의 위치 x(전진)
+    //고래의 위치 x(전진)
     private static final int WHALE_X_LOCATION = SCREEN_WIDTH/7;
-    //새가 이동할때 얼만큼 움직일지
-    //BIRD_JUMP_DIFF : 점프 높이
-    //BIRD_FALL_DIFF : 떨어지는 량(속도)
-    //BIRD_JUMP_HEIGHT : 앞으로 이동
-    private static final int WHALE_JUMP_DIFF = 10, WHALE_FALL_DIFF = WHALE_JUMP_DIFF /2, WHALE_JUMP_HEIGHT = SEAWEED_GAP - WHALE_HEIGHT - WHALE_JUMP_DIFF *2;
+    //고래가 이동할때 얼만큼 움직일지
+    //WHALE_JUMP_DIFF : 점프 높이
+    //WHALE_FALL_DIFF : 떨어지는 량(속도)
+    //WHALE_JUMP_HEIGHT : 앞으로 이동
+    private static final int WHALE_JUMP_DIFF = 15, WHALE_FALL_DIFF = WHALE_JUMP_DIFF /2, WHALE_JUMP_HEIGHT = SEAWEED_GAP - WHALE_HEIGHT - WHALE_JUMP_DIFF *2;
 
     //지역 변수
     //false -> 파이프 루프 실행 중 X, true -> 파이프 루프 실행중O
@@ -117,16 +114,18 @@ public class TopClass implements ActionListener, KeyListener {
 
         //게임 시작 버튼
         startGame = new JButton("Start");
+        startGame.setHorizontalAlignment(JButton.CENTER);
+
         //버튼 색깔 설정
-        startGame.setBackground(Color.BLUE);
-        startGame.setForeground(Color.WHITE);
+        startGame.setBackground(Color.darkGray);
+        startGame.setForeground(Color.white);
         //포커스 되지 않게 설정
         startGame.setFocusable(false);
         //버튼 속 글씨 설정
-        startGame.setFont(new Font("Calibri", Font.BOLD, 42));
+        startGame.setFont(new Font("BLOMBERG", Font.BOLD, 45));
         //버튼 위치 설정
         startGame.setAlignmentX(0.5f); //가로(X)
-        startGame.setAlignmentY(0.5f); //세로(O)
+        startGame.setAlignmentY(0.6f); //세로(O)
         //현제 리스너의 리벤트 실행
         startGame.addActionListener(this);
         topPanel.add(startGame);//startGame 패널 추가
@@ -329,12 +328,12 @@ public class TopClass implements ActionListener, KeyListener {
                 if(!isSplash) {
                     whale.setX(birdX);
                     whale.setY(birdY);
-                    pgs.setBird(whale);
+                    pgs.setWhale(whale);
                 }
 
                 //지역 변수를 구문 분석하여 PlayGameScreen에서 BottomPipe 및 TopPipe 지역 변수를 설정
-                pgs.setBottomPipe(bp1, bp2);
-                pgs.setTopPipe(tp1, tp2);
+                pgs.setBottomSeaweed(bp1, bp2);
+                pgs.setTopSeaweed(tp1, tp2);
                 pgs.setFish(fish);
 
 //	            //새가 화면에 나타나지 않는 오류 & 충돌 했을 시 해결을 위한 코드

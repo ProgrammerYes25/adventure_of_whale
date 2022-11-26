@@ -27,7 +27,6 @@ public class TopSeaweed {
 
     /**
      * TopSeaweed 개체에 대한 Getter 메서드.
-     * @return Image
      */
     public Image getSeaweed() {
         return topSeaweed;
@@ -35,7 +34,6 @@ public class TopSeaweed {
 
     /**
      * TopPipe 객체의 너비
-     * @return int
      */
     public int getWidth() {
         return topSeaweed.getWidth(null);
@@ -43,7 +41,6 @@ public class TopSeaweed {
 
     /**
      * TopPipe 객체의 높이
-     * @return int
      */
     public int getHeight() {
         return topSeaweed.getHeight(null);
@@ -51,7 +48,6 @@ public class TopSeaweed {
 
     /**
      * TopPipe 객체의 x 위치를 설정
-     * @param x
      */
     public void setX(int x) {
         xLoc = x;
@@ -59,7 +55,6 @@ public class TopSeaweed {
 
     /**
      * TopPipe 객체의 x 위치
-     * @return int
      */
     public int getX() {
         return xLoc;
@@ -67,7 +62,6 @@ public class TopSeaweed {
 
     /**
      * TopPipe 객체의 y 위치를 가져오는 메소드
-     * @param y
      */
     public void setY(int y) {
         yLoc = y;
@@ -75,7 +69,6 @@ public class TopSeaweed {
 
     /**
      * TopPipe 객체의 y 위치를 가져오는 메소드
-     * @return int
      */
     public int getY() {
         return yLoc;
@@ -83,7 +76,7 @@ public class TopSeaweed {
 
     /**
      * TopPipe의 이미지 윤곽선을 나타내는 Rectangle을 획득하는 데 사용되는 방법
-     * 화면에서 TopPipe의 위치를 ​​나타내는 @return Rectangle
+     * 화면에서 TopPipe의 위치를 ZWSPZWSP나타내는 @return Rectangle
      */
     public Rectangle getRectangle() {
         return (new Rectangle(xLoc, yLoc, topSeaweed.getWidth(null), topSeaweed.getHeight(null)));
@@ -101,5 +94,4 @@ public class TopSeaweed {
         g.dispose();
         return bi;
     }
-
 }
