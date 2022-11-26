@@ -3,10 +3,16 @@ package whale_adventure;
 import javax.swing.*;
 import java.awt.*;
 
+
 public class PlayGameScreen extends JPanel {
     //게임 화면 제생
     //기본 참조 ID
     private static final long serialVersionUID = 1L;
+
+    private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();   //넓이 구성 코드
+    private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();   //높이
+
+    private Image background=new ImageIcon(TopClass.class.getResource("resources\\BackGround.PNG")).getImage();
 
     //전역 변수
     private int screenWidth, screenHeight;
@@ -31,12 +37,7 @@ public class PlayGameScreen extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(new Color(89, 81, 247)); //하늘(바다) 배경
-        g.fillRect(0, 0, screenWidth, screenHeight*7/8); //하늘(바다) 크기
-        g.setColor(new Color(147, 136, 9)); //땅 배경
-        g.fillRect(0, screenHeight*7/8, screenWidth, screenHeight/8); //땅 크기
-        g.setColor(Color.BLACK); //구분선 색
-        g.drawLine(0, screenHeight*7/8, screenWidth, screenHeight*7/8); //구분선 크기
+        g.drawImage(background, 0, 0,screenWidth, screenHeight,null);
 
         //객체를 그리기 전 인스턴스화해
         if(bp1 != null && bp2 != null && tp1 != null && tp2 != null) {

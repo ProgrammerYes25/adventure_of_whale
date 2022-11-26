@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-import javax.annotation.Generated;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,11 +22,11 @@ public class TopClass implements ActionListener, KeyListener {
     private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();   //넓이 구성 코드
     private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();   //높이 구성 코드
     //파이프 사이의 거리(단위 : px)
-    private static final int PIPE_GAP = SCREEN_HEIGHT/5;
+    private static final int SEAWEED_GAP = SCREEN_HEIGHT/5;
     //파이프 크기(단위 : px)
-    private static final int PIPE_WIDTH = SCREEN_WIDTH/8, PIPE_HEIGHT = 4*PIPE_WIDTH;
+    private static final int SEAWEED_WIDTH = SCREEN_WIDTH/8, SEAWEED_HEIGHT = 4* SEAWEED_WIDTH;
     //새크기(단위 : px)
-    private static final int BIRD_WIDTH = 120, BIRD_HEIGHT = 75;
+    private static final int WHALE_WIDTH = 120, WHALE_HEIGHT = 75;
     //물고기 크기
     private static final int FISH_WIDTH = 50, FISH_HEIGHT = 50;
     //업데이트 간격(ms)
@@ -37,12 +36,12 @@ public class TopClass implements ActionListener, KeyListener {
     //로드 시간이 길기 때문에 파이프가 화면 중간에 팝업됩니다.
     private static final int SCREEN_DELAY = 300;
     //새의 위치 x(전진)
-    private static final int BIRD_X_LOCATION = SCREEN_WIDTH/7;
+    private static final int WHALE_X_LOCATION = SCREEN_WIDTH/7;
     //새가 이동할때 얼만큼 움직일지
     //BIRD_JUMP_DIFF : 점프 높이
     //BIRD_FALL_DIFF : 떨어지는 량(속도)
     //BIRD_JUMP_HEIGHT : 앞으로 이동
-    private static final int BIRD_JUMP_DIFF = 10, BIRD_FALL_DIFF = BIRD_JUMP_DIFF/2, BIRD_JUMP_HEIGHT = PIPE_GAP - BIRD_HEIGHT - BIRD_JUMP_DIFF*2;
+    private static final int WHALE_JUMP_DIFF = 10, WHALE_FALL_DIFF = WHALE_JUMP_DIFF /2, WHALE_JUMP_HEIGHT = SEAWEED_GAP - WHALE_HEIGHT - WHALE_JUMP_DIFF *2;
 
     //지역 변수
     //false -> 파이프 루프 실행 중 X, true -> 파이프 루프 실행중O
@@ -50,18 +49,18 @@ public class TopClass implements ActionListener, KeyListener {
     //false -> 게임플레이 중 X, true -> 게임플레이 중O
     private boolean gamePlay = false;
     //false -> 키를 눌러 새를 이동 X, true -> 키를 눌러 새를 이동O
-    private boolean birdThrust = false;
+    private boolean whaleThrust = false;
     //false -> 점프 키를 한번 더 누름  X, true -> 점프 키를 한번 더 누름 O
-    private boolean birdFired = false;
+    private boolean whaleFired = false;
     //스페이스 바 해제, true로 시작하여 레지스터를 처음 누릅니다.
     private boolean released = true;
     //새의 위치 y(점프)
-    private int birdYTracker = SCREEN_HEIGHT/2 - BIRD_HEIGHT;
+    private int whaleYTracker = SCREEN_HEIGHT/2 - WHALE_HEIGHT;
     //빌드 완료 객체
     private Object buildComplete = new Object();
 
     //지역 스윙 객체
-    private JFrame f = new JFrame("Flappy Bird Redux");//프라임 생성 타이틀은 "Flappy Bird Redux"
+    private JFrame f = new JFrame("Whale Adventures");//프라임 생성 타이틀은 "Whale Adventures"
     private JButton startGame;//게임 시작 버튼
     private JPanel topPanel; //declared globally to accommodate the repaint operation and allow for removeAll(), etc.
 
@@ -117,7 +116,7 @@ public class TopClass implements ActionListener, KeyListener {
         topPanel.setLayout(overlay);
 
         //게임 시작 버튼
-        startGame = new JButton("Start Playing!");
+        startGame = new JButton("Start");
         //버튼 색깔 설정
         startGame.setBackground(Color.BLUE);
         startGame.setForeground(Color.WHITE);
@@ -161,15 +160,15 @@ public class TopClass implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE && gamePlay == true && released == true){
             //새 위치 이동
-            if(birdThrust) { //더블 점프 여부
-                birdFired = true;
+            if(whaleThrust) { //더블 점프 여부
+                whaleFired = true;
             }
-            birdThrust = true;
+            whaleThrust = true;
             released = false;
         }
         else if(e.getKeyCode() == KeyEvent.VK_B && gamePlay == false) {
-            birdYTracker = SCREEN_HEIGHT/2 - BIRD_HEIGHT; //새 위치 재설정
-            birdThrust = false; //점프키 리셋 (점프가 밀려서 발생하는 오류 방지)
+            whaleYTracker = SCREEN_HEIGHT/2 - WHALE_HEIGHT; //새 위치 재설정
+            whaleThrust = false; //점프키 리셋 (점프가 밀려서 발생하는 오류 방지)
             actionPerformed(new ActionEvent(startGame, -1, ""));
         }
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -256,17 +255,17 @@ public class TopClass implements ActionListener, KeyListener {
 
     //화면 이동 수행 메소드
     private void gameScreen(boolean isSplash) {
-        BottomSeaweed bp1 = new BottomSeaweed(PIPE_WIDTH, PIPE_HEIGHT);
-        BottomSeaweed bp2 = new BottomSeaweed(PIPE_WIDTH, PIPE_HEIGHT);
-        TopSeaweed tp1 = new TopSeaweed(PIPE_WIDTH, PIPE_HEIGHT);
-        TopSeaweed tp2 = new TopSeaweed(PIPE_WIDTH, PIPE_HEIGHT);
-        Whale whale = new Whale(BIRD_WIDTH, BIRD_HEIGHT);
+        BottomSeaweed bp1 = new BottomSeaweed(SEAWEED_WIDTH, SEAWEED_HEIGHT);
+        BottomSeaweed bp2 = new BottomSeaweed(SEAWEED_WIDTH, SEAWEED_HEIGHT);
+        TopSeaweed tp1 = new TopSeaweed(SEAWEED_WIDTH, SEAWEED_HEIGHT);
+        TopSeaweed tp2 = new TopSeaweed(SEAWEED_WIDTH, SEAWEED_HEIGHT);
+        Whale whale = new Whale(WHALE_WIDTH, WHALE_HEIGHT);
         Fish fish = new Fish(FISH_WIDTH, FISH_HEIGHT);
 
         //바닥 파이프의 x 및 y 이미지 위치를 추적하는 변수
-        int xLoc1 = SCREEN_WIDTH+SCREEN_DELAY, xLoc2 = (int) ((double) 3.0/2.0*SCREEN_WIDTH+PIPE_WIDTH/2.0)+SCREEN_DELAY;
+        int xLoc1 = SCREEN_WIDTH+SCREEN_DELAY, xLoc2 = (int) ((double) 3.0/2.0*SCREEN_WIDTH+ SEAWEED_WIDTH /2.0)+SCREEN_DELAY;
         int yLoc1 = bottomPipeLoc(), yLoc2 = bottomPipeLoc();
-        int birdX = BIRD_X_LOCATION, birdY = birdYTracker;
+        int birdX = WHALE_X_LOCATION, birdY = whaleYTracker;
 
         //루프 시작 시간을 유지할 변수
         long startTime = System.currentTimeMillis();
@@ -275,11 +274,11 @@ public class TopClass implements ActionListener, KeyListener {
             if((System.currentTimeMillis() - startTime) > UPDATE_DIFFERENCE) {
                 //파이프 세트가 화면을 떠났는지 확인
                 //있는 경우 파이프의 X 위치를 재설정하고 새 Y 위치를 할당
-                if(xLoc1 < (0-PIPE_WIDTH)) {
+                if(xLoc1 < (0- SEAWEED_WIDTH)) {
                     xLoc1 = SCREEN_WIDTH;
                     yLoc1 = bottomPipeLoc();
                 }
-                else if(xLoc2 < (0-PIPE_WIDTH)) {
+                else if(xLoc2 < (0- SEAWEED_WIDTH)) {
                     xLoc2 = SCREEN_WIDTH;
                     yLoc2 = bottomPipeLoc();
                 }
@@ -288,31 +287,31 @@ public class TopClass implements ActionListener, KeyListener {
                 xLoc1 -= X_MOVEMENT_DIFFERENCE;
                 xLoc2 -= X_MOVEMENT_DIFFERENCE;
 
-                if(birdFired && !isSplash) {
-                    birdYTracker = birdY;
-                    birdFired = false;
+                if(whaleFired && !isSplash) {
+                    whaleYTracker = birdY;
+                    whaleFired = false;
                 }
 
-                if(birdThrust && !isSplash) {
+                if(whaleThrust && !isSplash) {
                     //새 수직 이동
-                    if(birdYTracker - birdY - BIRD_JUMP_DIFF < BIRD_JUMP_HEIGHT) {
-                        if(birdY - BIRD_JUMP_DIFF > 0) {
-                            birdY -= BIRD_JUMP_DIFF; //coordinates different
+                    if(whaleYTracker - birdY - WHALE_JUMP_DIFF < WHALE_JUMP_HEIGHT) {
+                        if(birdY - WHALE_JUMP_DIFF > 0) {
+                            birdY -= WHALE_JUMP_DIFF; //coordinates different
                         }
                         else {
                             birdY = 0;
-                            birdYTracker = birdY;
-                            birdThrust = false;
+                            whaleYTracker = birdY;
+                            whaleThrust = false;
                         }
                     }
                     else {
-                        birdYTracker = birdY;
-                        birdThrust = false;
+                        whaleYTracker = birdY;
+                        whaleThrust = false;
                     }
                 }
                 else if(!isSplash) {
-                    birdY += BIRD_FALL_DIFF;
-                    birdYTracker = birdY;
+                    birdY += WHALE_FALL_DIFF;
+                    whaleYTracker = birdY;
                 }
 
                 //BottomPipe 및 TopPipe 위치 업데이트
@@ -321,9 +320,9 @@ public class TopClass implements ActionListener, KeyListener {
 	            bp2.setX(xLoc2);
 	            bp2.setY(yLoc2);
                 tp1.setX(xLoc1);
-                tp1.setY(yLoc1-PIPE_GAP-PIPE_HEIGHT);
+                tp1.setY(yLoc1- SEAWEED_GAP - SEAWEED_HEIGHT);
                 tp2.setX(xLoc2);
-                tp2.setY(yLoc2-PIPE_GAP-PIPE_HEIGHT);
+                tp2.setY(yLoc2- SEAWEED_GAP - SEAWEED_HEIGHT);
                 fish.setX(xLoc1);
                 fish.setX(xLoc2);
 
@@ -359,7 +358,7 @@ public class TopClass implements ActionListener, KeyListener {
     private int bottomPipeLoc() {
         int temp = 0;
         //두 파이프를 모두 화면에 표시 할수 있을 때까지 반복
-        while(temp <= PIPE_GAP+50 || temp >= SCREEN_HEIGHT-PIPE_GAP) {
+        while(temp <= SEAWEED_GAP +50 || temp >= SCREEN_HEIGHT- SEAWEED_GAP) {
             temp = (int) ((double) Math.random()*((double)SCREEN_HEIGHT));
         }
         return temp;
@@ -379,10 +378,10 @@ public class TopClass implements ActionListener, KeyListener {
 	    */
 	   // 점수 추가 하는 메소드
 	   private void updateScore(BottomSeaweed bp1, BottomSeaweed bp2, Whale bird) {
-	      if(bp1.getX() + PIPE_WIDTH < bird.getX() && bp1.getX() + PIPE_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
+	      if(bp1.getX() + SEAWEED_WIDTH < bird.getX() && bp1.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
 	         pgs.incrementJump();
 	      }
-	      else if(bp2.getX() + PIPE_WIDTH < bird.getX() && bp2.getX() + PIPE_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
+	      else if(bp2.getX() + SEAWEED_WIDTH < bird.getX() && bp2.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
 	         pgs.incrementJump();
 	      }
 	   }
@@ -401,7 +400,7 @@ public class TopClass implements ActionListener, KeyListener {
 	      collisionHelper(whale.getRectangle(), tp1.getRectangle(), whale.getBI(), tp1.getBI());
 	      collisionHelper(whale.getRectangle(), tp2.getRectangle(), whale.getBI(), tp2.getBI());
 
-	      if(whale.getY() + BIRD_HEIGHT > SCREEN_HEIGHT*7/8) { //바닦에 부딪혔을 때
+	      if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT*7/8) { //바닦에 부딪혔을 때
 	         pgs.sendText("Game Over");
 	         loopVar = false;   //충돌시 루프를 멈추고
 	         gamePlay = false;    //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
