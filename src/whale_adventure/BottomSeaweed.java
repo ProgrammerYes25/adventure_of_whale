@@ -10,7 +10,7 @@ public class BottomSeaweed {
     private int xLoc = 0, yLoc = 0;
 
     public BottomSeaweed(int initialWidth, int initialHeight) {
-        bottomSeaweed = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("resources/tube_bottom.png"));
+        bottomSeaweed = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("resources\\the_seaweed_below.png"));
         scaleBottomSeaweed(initialWidth, initialHeight);
     }
 
