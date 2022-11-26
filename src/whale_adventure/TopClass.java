@@ -55,7 +55,7 @@ public class TopClass implements ActionListener, KeyListener {
     private int whaleYTracker = SCREEN_HEIGHT/2 - WHALE_HEIGHT;
     //빌드 완료 객체
     private Object buildComplete = new Object();
-    private Object rebuildComplete = new Object();
+
     //지역 스윙 객체
     private JFrame f = new JFrame("Whale Adventures");//프라임 생성 타이틀은 "Whale Adventures"
     private JButton startGame,restartGame;//게임 시작 버튼
@@ -65,6 +65,8 @@ public class TopClass implements ActionListener, KeyListener {
     private static TopClass tc = new TopClass();
     //게임을 시작할 때 움직이는 배경이 있는 패널
     private static PlayGameScreen pgs;
+
+    private int Life;
 
     //기본 생성자
     public TopClass() {
@@ -133,11 +135,13 @@ public class TopClass implements ActionListener, KeyListener {
         pgs = new PlayGameScreen(SCREEN_WIDTH, SCREEN_HEIGHT, true); //pgs 페널 설정
         topPanel.add(pgs);   //topPanel 패널 추가
 
+        //startGame.drawString("Life : " + Life,1);
+
         return topPanel;// topPanel 반환
     }
     private void setRestartGame(){
         //게임 다시 시작 버튼
-        restartGame = new JButton("ReStart");
+        restartGame = new JButton("Start");
         restartGame.setHorizontalAlignment(JButton.CENTER);
 
         //버튼 색깔 설정
@@ -150,6 +154,7 @@ public class TopClass implements ActionListener, KeyListener {
         //버튼 위치 설정
         restartGame.setAlignmentX(0.5f); //가로(X)
         restartGame.setAlignmentY(0.6f); //세로(O)
+        //현제 리스너의 리벤트 실행;
     }
 
     //작업 이벤트 구현
@@ -337,7 +342,7 @@ public class TopClass implements ActionListener, KeyListener {
                 tp2.setX(xLoc2);
                 tp2.setY(yLoc2- SEAWEED_GAP - SEAWEED_HEIGHT);
                 fish.setX(xLoc1);
-                fish.setX(xLoc2);
+                fish.setY(xLoc2);
 
                 if(!isSplash) {
                     whale.setX(birdX);
