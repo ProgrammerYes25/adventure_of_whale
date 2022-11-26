@@ -58,7 +58,7 @@ public class TopClass implements ActionListener, KeyListener {
 
     //지역 스윙 객체
     private JFrame f = new JFrame("Whale Adventures");//프라임 생성 타이틀은 "Whale Adventures"
-    private JButton startGame;//게임 시작 버튼
+    private JButton startGame,restartGame;//게임 시작 버튼
     private JPanel topPanel; //declared globally to accommodate the repaint operation and allow for removeAll(), etc.
 
     //지역 그리드 객체
@@ -129,11 +129,28 @@ public class TopClass implements ActionListener, KeyListener {
         //현제 리스너의 리벤트 실행
         startGame.addActionListener(this);
         topPanel.add(startGame);//startGame 패널 추가
-
+        setRestartGame();
         pgs = new PlayGameScreen(SCREEN_WIDTH, SCREEN_HEIGHT, true); //pgs 페널 설정
         topPanel.add(pgs);   //topPanel 패널 추가
 
         return topPanel;// topPanel 반환
+    }
+    private void setRestartGame(){
+        //게임 다시 시작 버튼
+        restartGame = new JButton("Start");
+        restartGame.setHorizontalAlignment(JButton.CENTER);
+
+        //버튼 색깔 설정
+        restartGame.setBackground(Color.darkGray);
+        restartGame.setForeground(Color.white);
+        //포커스 되지 않게 설정
+        restartGame.setFocusable(false);
+        //버튼 속 글씨 설정
+        restartGame.setFont(new Font("BLOMBERG", Font.BOLD, 45));
+        //버튼 위치 설정
+        restartGame.setAlignmentX(0.5f); //가로(X)
+        restartGame.setAlignmentY(0.6f); //세로(O)
+        //현제 리스너의 리벤트 실행;
     }
 
     //작업 이벤트 구현
@@ -142,6 +159,8 @@ public class TopClass implements ActionListener, KeyListener {
             //startGame버튼을 클릭 했을 때 스크린 멈추고
             loopVar = false;
             fadeOperation();   //호출
+        }else if(e.getSource() == restartGame){
+            buildFrame();
         }
         else if(e.getSource() == buildComplete) {
             //빌드가 완료 되었을때 파이프 루프 돌리고  게임 플레이 중으로 설정 이동 수행 함
@@ -179,10 +198,6 @@ public class TopClass implements ActionListener, KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
             released = true;
         }
-    }
-
-    public void keyTyped1(KeyEvent e) {
-
     }
 
     //라운드 시작 전에 수행되는 페이드 작업 수행
@@ -399,10 +414,8 @@ public class TopClass implements ActionListener, KeyListener {
         collisionHelper(whale.getRectangle(), tp1.getRectangle(), whale.getBI(), tp1.getBI());
         collisionHelper(whale.getRectangle(), tp2.getRectangle(), whale.getBI(), tp2.getBI());
 
-        if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT*7/8) { //바닦에 부딪혔을 때
-            pgs.sendText("Game Over");
-            loopVar = false;   //충돌시 루프를 멈추고
-            gamePlay = false;    //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
+        if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT*999/1000) { //바닦에 부딪혔을 때
+            restart();
         }
     }
 
@@ -425,14 +438,19 @@ public class TopClass implements ActionListener, KeyListener {
             for(int i = firstI; i < r.getWidth() + firstI; i++) {
                 for(int j = firstJ; j < r.getHeight() + firstJ; j++) {
                     if((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
-                        pgs.sendText("Game Over");
-                        loopVar = false; //충돌시 루프를 멈추고
-                        gamePlay = false; //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
+                        restart();
                         break;
                     }
                 }
             }
         }
+    }
+    private void restart(){
+        pgs.sendText("Game Over");
+        restartGame.addActionListener(this);
+        topPanel.add(restartGame);
+        loopVar = false; //충돌시 루프를 멈추고
+        gamePlay = false; //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
     }
 
 
