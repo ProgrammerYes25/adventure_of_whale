@@ -12,7 +12,7 @@ public class Fish {
      * 기본 생성자
      */
     public Fish(int initialWidth, int initialHeight) {
-        fish = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("resources\\fish.png"));
+        fish = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("resources\\fish.PNG"));
         scaleFish(initialWidth, initialHeight);
     }
 

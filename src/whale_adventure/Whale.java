@@ -10,7 +10,7 @@ public class Whale {
     private int xLoc = 0, yLoc = 0;
 
     public Whale(int initialWidth, int initialHeight) {
-        flappyWhale = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("resources\\whale.png"));
+        flappyWhale = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("resources\\whale.PNG"));
         scaleWhale(initialWidth, initialHeight);
     }
 

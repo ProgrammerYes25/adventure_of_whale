@@ -315,10 +315,10 @@ public class TopClass implements ActionListener, KeyListener {
                 }
 
                 //BottomPipe 및 TopPipe 위치 업데이트
-	            bp1.setX(xLoc1);
-	            bp1.setY(yLoc1);
-	            bp2.setX(xLoc2);
-	            bp2.setY(yLoc2);
+                bp1.setX(xLoc1);
+                bp1.setY(yLoc1);
+                bp2.setX(xLoc2);
+                bp2.setY(yLoc2);
                 tp1.setX(xLoc1);
                 tp1.setY(yLoc1- SEAWEED_GAP - SEAWEED_HEIGHT);
                 tp2.setX(xLoc2);
@@ -326,22 +326,22 @@ public class TopClass implements ActionListener, KeyListener {
                 fish.setX(xLoc1);
                 fish.setX(xLoc2);
 
-	            if(!isSplash) {
-	               whale.setX(birdX);
-	               whale.setY(birdY);
-	               pgs.setBird(whale);
-	            }
+                if(!isSplash) {
+                    whale.setX(birdX);
+                    whale.setY(birdY);
+                    pgs.setBird(whale);
+                }
 
                 //지역 변수를 구문 분석하여 PlayGameScreen에서 BottomPipe 및 TopPipe 지역 변수를 설정
-	            pgs.setBottomPipe(bp1, bp2);
+                pgs.setBottomPipe(bp1, bp2);
                 pgs.setTopPipe(tp1, tp2);
                 pgs.setFish(fish);
 
 //	            //새가 화면에 나타나지 않는 오류 & 충돌 했을 시 해결을 위한 코드
-	            if(!isSplash && whale.getWidth() != -1) {
-	               collisionDetection(bp1, bp2, tp1, tp2, whale);   //파이프나 바닦에 부딪혔는지 확인
-	               updateScore(bp1, bp2, whale);   // 파이프 통과 했을 때하는
-	            }
+                if(!isSplash && whale.getWidth() != -1) {
+                    collisionDetection(bp1, bp2, tp1, tp2, whale);   //파이프나 바닦에 부딪혔는지 확인
+                    updateScore(bp1, bp2, whale);   // 파이프 통과 했을 때하는
+                }
 
                 //pgs의 패널 업데이트
                 topPanel.revalidate();
@@ -371,70 +371,70 @@ public class TopClass implements ActionListener, KeyListener {
     }
 
 
-	   /*
-	    * @param bp1 -> BottomPipe 개체
-	    * @param bp2 -> BottomPipe 개체
-	    * @param Bird 객체
-	    */
-	   // 점수 추가 하는 메소드
-	   private void updateScore(BottomSeaweed bp1, BottomSeaweed bp2, Whale bird) {
-	      if(bp1.getX() + SEAWEED_WIDTH < bird.getX() && bp1.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
-	         pgs.incrementJump();
-	      }
-	      else if(bp2.getX() + SEAWEED_WIDTH < bird.getX() && bp2.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
-	         pgs.incrementJump();
-	      }
-	   }
+    /*
+     * @param bp1 -> BottomPipe 개체
+     * @param bp2 -> BottomPipe 개체
+     * @param Bird 객체
+     */
+    // 점수 추가 하는 메소드
+    private void updateScore(BottomSeaweed bp1, BottomSeaweed bp2, Whale bird) {
+        if(bp1.getX() + SEAWEED_WIDTH < bird.getX() && bp1.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
+            pgs.incrementJump();
+        }
+        else if(bp2.getX() + SEAWEED_WIDTH < bird.getX() && bp2.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
+            pgs.incrementJump();
+        }
+    }
 
-	   /*
-	    * @param bp1 -> BottomPipe 개체
-	    * @param bp2 -> BottomPipe 개체
-	    * @param tp1 -> TopPipe 객체
-	    * @param tp2 -> TopPipe 객체
-	    * @param Bird 객체
-	    */
-	   //충돌이 발생했는지 여부를 테스트
-	   private void collisionDetection(BottomSeaweed bp1, BottomSeaweed bp2, TopSeaweed tp1, TopSeaweed tp2, Whale whale) {
-	      collisionHelper(whale.getRectangle(), bp1.getRectangle(), whale.getBI(), bp1.getBI());
-	      collisionHelper(whale.getRectangle(), bp2.getRectangle(), whale.getBI(), bp2.getBI());
-	      collisionHelper(whale.getRectangle(), tp1.getRectangle(), whale.getBI(), tp1.getBI());
-	      collisionHelper(whale.getRectangle(), tp2.getRectangle(), whale.getBI(), tp2.getBI());
+    /*
+     * @param bp1 -> BottomPipe 개체
+     * @param bp2 -> BottomPipe 개체
+     * @param tp1 -> TopPipe 객체
+     * @param tp2 -> TopPipe 객체
+     * @param Bird 객체
+     */
+    //충돌이 발생했는지 여부를 테스트
+    private void collisionDetection(BottomSeaweed bp1, BottomSeaweed bp2, TopSeaweed tp1, TopSeaweed tp2, Whale whale) {
+        collisionHelper(whale.getRectangle(), bp1.getRectangle(), whale.getBI(), bp1.getBI());
+        collisionHelper(whale.getRectangle(), bp2.getRectangle(), whale.getBI(), bp2.getBI());
+        collisionHelper(whale.getRectangle(), tp1.getRectangle(), whale.getBI(), tp1.getBI());
+        collisionHelper(whale.getRectangle(), tp2.getRectangle(), whale.getBI(), tp2.getBI());
 
-	      if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT*7/8) { //바닦에 부딪혔을 때
-	         pgs.sendText("Game Over");
-	         loopVar = false;   //충돌시 루프를 멈추고
-	         gamePlay = false;    //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
-	      }
-	   }
+        if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT*7/8) { //바닦에 부딪혔을 때
+            pgs.sendText("Game Over");
+            loopVar = false;   //충돌시 루프를 멈추고
+            gamePlay = false;    //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
+        }
+    }
 
-	   /*
-	   * @paramr1 The Bird's 직사각형 구성요소
-	   * @paramr2 충돌 구성 요소 직사각형
-	   * @param b1 Bird's Buffered Image 구성 요소
-	   * @param b2 충돌 구성 요소 버퍼링된 이미지
-	    */
-	   //pipe와 Bird 충돌을 테스트
-	   private void collisionHelper(Rectangle r1, Rectangle r2, BufferedImage b1, BufferedImage b2) {
-	      if(r1.intersects(r2)) {
-	         Rectangle r = r1.intersection(r2);
+    /*
+     * @paramr1 The Bird's 직사각형 구성요소
+     * @paramr2 충돌 구성 요소 직사각형
+     * @param b1 Bird's Buffered Image 구성 요소
+     * @param b2 충돌 구성 요소 버퍼링된 이미지
+     */
+    //pipe와 Bird 충돌을 테스트
+    private void collisionHelper(Rectangle r1, Rectangle r2, BufferedImage b1, BufferedImage b2) {
+        if(r1.intersects(r2)) {
+            Rectangle r = r1.intersection(r2);
 
-	         int firstI = (int) (r.getMinX() - r1.getMinX());
-	         int firstJ = (int) (r.getMinY() - r1.getMinY());
-	         int bp1XHelper = (int) (r1.getMinX() - r2.getMinX());
-	         int bp1YHelper = (int) (r1.getMinY() - r2.getMinY());
-	         //충돌 확인
-	         for(int i = firstI; i < r.getWidth() + firstI; i++) {
-	            for(int j = firstJ; j < r.getHeight() + firstJ; j++) {
-	               if((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
-	                  pgs.sendText("Game Over");
-	                  loopVar = false; //충돌시 루프를 멈추고
-	                  gamePlay = false; //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
-	                  break;
-	               }
-	            }
-	         }
-	      }
-	   }
+            int firstI = (int) (r.getMinX() - r1.getMinX());
+            int firstJ = (int) (r.getMinY() - r1.getMinY());
+            int bp1XHelper = (int) (r1.getMinX() - r2.getMinX());
+            int bp1YHelper = (int) (r1.getMinY() - r2.getMinY());
+            //충돌 확인
+            for(int i = firstI; i < r.getWidth() + firstI; i++) {
+                for(int j = firstJ; j < r.getHeight() + firstJ; j++) {
+                    if((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
+                        pgs.sendText("Game Over");
+                        loopVar = false; //충돌시 루프를 멈추고
+                        gamePlay = false; //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
 
 }

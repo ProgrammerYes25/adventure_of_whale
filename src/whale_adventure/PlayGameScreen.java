@@ -3,7 +3,6 @@ package whale_adventure;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class PlayGameScreen extends JPanel {
     //게임 화면 제생
     //기본 참조 ID
