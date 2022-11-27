@@ -21,7 +21,7 @@ public class PlayGameScreen extends JPanel {
     private TopSeaweed tp1, tp2;
     private Fish fish;
     private Whale whale;
-    private int life=1;
+    public int life=1;
 
 
 
@@ -106,7 +106,7 @@ public class PlayGameScreen extends JPanel {
     }
 
     public void incrementLife(){life++;}
-
+    public void reductionLife(){life--;}
     // 현재 점프 점수를 반환
     public int getScore() {
         return successfulJumps;

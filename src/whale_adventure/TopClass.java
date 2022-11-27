@@ -76,7 +76,7 @@ public class TopClass implements ActionListener, KeyListener {
     private int Life = 1, score = 0;
     private String name = null;
 
-    private int seaweedCount = 0;
+    private int seaweedCount = 0, crashCount=1;
 
     //기본 생성자
     public TopClass() {
@@ -198,6 +198,9 @@ public class TopClass implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE && gamePlay == true && released == true) {
             //새 위치 이동
+            if(crashCount!=0){
+                crashCount--;
+            }
             if (whaleThrust) { //더블 점프 여부
                 whaleFired = true;
             }
@@ -503,8 +506,12 @@ public class TopClass implements ActionListener, KeyListener {
                         break;
                     }
                 }
-                if (crash == 0) {
-                    restart();
+                if (crash == 0 && crashCount ==0) {
+                    crashCount = 2;
+                    pgs.reductionLife();
+                    if(pgs.life==0){
+                        restart();
+                    }
                     break;
                 }
             }
@@ -513,6 +520,7 @@ public class TopClass implements ActionListener, KeyListener {
 
     private void restart() {
         pgs.sendText("Game Over");
+        crashCount=1;
         restartGame.addActionListener(this);
         topPanel.add(restartGame);
         loopVar = false; //충돌시 루프를 멈추고
