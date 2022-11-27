@@ -29,7 +29,7 @@ public class TopClass implements ActionListener, KeyListener {
     //고래크기(단위 : px)
     private static final int WHALE_WIDTH = 140, WHALE_HEIGHT = 120;
     //물고기 크기
-    private static final int FISH_WIDTH = 60, FISH_HEIGHT = 60;
+    private static final int FISH_WIDTH = 90, FISH_HEIGHT = 90;
     //업데이트 간격(ms)
     private static final int UPDATE_DIFFERENCE = 18;
     //업데이트할 때마다 파이프가 이동하는 거리
@@ -296,6 +296,8 @@ public class TopClass implements ActionListener, KeyListener {
         //바닥 파이프의 x 및 y 이미지 위치를 추적하는 변수
         int xLoc1 = SCREEN_WIDTH+SCREEN_DELAY, xLoc2 = (int) ((double) 3.0/2.0*SCREEN_WIDTH+ SEAWEED_WIDTH /2.0)+SCREEN_DELAY;
         int yLoc1 = bottomPipeLoc(), yLoc2 = bottomPipeLoc();
+        int fishx = xLoc1+FISH_WIDTH*4;
+        int fishy = yLoc1-FISH_HEIGHT;
         int birdX = WHALE_X_LOCATION, birdY = whaleYTracker;
 
         //루프 시작 시간을 유지할 변수
@@ -313,10 +315,15 @@ public class TopClass implements ActionListener, KeyListener {
                     xLoc2 = SCREEN_WIDTH;
                     yLoc2 = bottomPipeLoc();
                 }
+                if(fishx < (0- SEAWEED_WIDTH)) {
+                    fishx = xLoc1+FISH_WIDTH*4;
+                    fishy = yLoc1-FISH_HEIGHT;
+                }
 
                 //파이프 위치를 미리 정해진 양만큼 줄임
                 xLoc1 -= X_MOVEMENT_DIFFERENCE;
                 xLoc2 -= X_MOVEMENT_DIFFERENCE;
+                fishx -= X_MOVEMENT_DIFFERENCE;
 
                 if(whaleFired && !isSplash) {
                     whaleYTracker = birdY;
@@ -354,8 +361,8 @@ public class TopClass implements ActionListener, KeyListener {
                 tp1.setY(yLoc1- SEAWEED_GAP - SEAWEED_HEIGHT);
                 tp2.setX(xLoc2);
                 tp2.setY(yLoc2- SEAWEED_GAP - SEAWEED_HEIGHT);
-                fish.setX(xLoc1);
-                fish.setY(xLoc2);
+                fish.setX(fishx);
+                fish.setY(fishy);
 
                 if(!isSplash) {
                     whale.setX(birdX);
