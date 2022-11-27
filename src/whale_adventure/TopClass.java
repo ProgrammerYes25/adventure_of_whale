@@ -23,9 +23,9 @@ public class TopClass implements ActionListener, KeyListener {
     private static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();   //넓이 구성 코드
     private static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();   //높이 구성 코드
     //파이프 사이의 거리(단위 : px)
-    private static final int SEAWEED_GAP = SCREEN_HEIGHT/4;
+    private static final int SEAWEED_GAP = SCREEN_HEIGHT / 4;
     //파이프 크기(단위 : px)
-    private static final int SEAWEED_WIDTH = SCREEN_WIDTH/6, SEAWEED_HEIGHT = 3* SEAWEED_WIDTH;
+    private static final int SEAWEED_WIDTH = SCREEN_WIDTH / 6, SEAWEED_HEIGHT = 3 * SEAWEED_WIDTH;
     //고래크기(단위 : px)
     private static final int WHALE_WIDTH = 140, WHALE_HEIGHT = 120;
     //물고기 크기
@@ -37,12 +37,12 @@ public class TopClass implements ActionListener, KeyListener {
     //로드 시간이 길기 때문에 파이프가 화면 중간에 팝업됩니다.
     private static final int SCREEN_DELAY = 300;
     //고래의 위치 x(전진)
-    private static final int WHALE_X_LOCATION = SCREEN_WIDTH/7;
+    private static final int WHALE_X_LOCATION = SCREEN_WIDTH / 7;
     //고래가 이동할때 얼만큼 움직일지
     //WHALE_JUMP_DIFF : 점프 높이
     //WHALE_FALL_DIFF : 떨어지는 량(속도)
     //WHALE_JUMP_HEIGHT : 앞으로 이동
-    private static final int WHALE_JUMP_DIFF = 15, WHALE_FALL_DIFF = WHALE_JUMP_DIFF /2, WHALE_JUMP_HEIGHT = SEAWEED_GAP - WHALE_HEIGHT - WHALE_JUMP_DIFF *2;
+    private static final int WHALE_JUMP_DIFF = 15, WHALE_FALL_DIFF = WHALE_JUMP_DIFF / 2, WHALE_JUMP_HEIGHT = SEAWEED_GAP - WHALE_HEIGHT - WHALE_JUMP_DIFF * 2;
 
     //지역 변수
     //false -> 파이프 루프 실행 중 X, true -> 파이프 루프 실행중O
@@ -56,13 +56,13 @@ public class TopClass implements ActionListener, KeyListener {
     //스페이스 바 해제, true로 시작하여 레지스터를 처음 누릅니다.
     private boolean released = true;
     //새의 위치 y(점프)
-    private int whaleYTracker = SCREEN_HEIGHT/2 - WHALE_HEIGHT;
+    private int whaleYTracker = SCREEN_HEIGHT / 2 - WHALE_HEIGHT;
     //빌드 완료 객체
     private Object buildComplete = new Object();
 
     //지역 스윙 객체
     private JFrame f = new JFrame("Whale Adventures");//프라임 생성 타이틀은 "Whale Adventures"
-    private JButton startGame,restartGame;//게임 시작 버튼
+    private JButton startGame, restartGame;//게임 시작 버튼
     private JPanel topPanel; //declared globally to accommodate the repaint operation and allow for removeAll(), etc.
 
     //지역 그리드 객체
@@ -73,8 +73,8 @@ public class TopClass implements ActionListener, KeyListener {
     private String userName = "root";
     private String password = "mirim";
 
-    private int Life, score=0;
-    private String name =null;
+    private int Life = 1, score = 0;
+    private String name = null;
 
     //기본 생성자
     public TopClass() {
@@ -109,11 +109,12 @@ public class TopClass implements ActionListener, KeyListener {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setAlwaysOnTop(false);
         f.setVisible(true);
-        f.setMinimumSize(new Dimension(SCREEN_WIDTH*1/4, SCREEN_HEIGHT*1/4));
+        f.setMinimumSize(new Dimension(SCREEN_WIDTH * 1 / 4, SCREEN_HEIGHT * 1 / 4));
         f.setExtendedState(JFrame.MAXIMIZED_BOTH);
         f.setIconImage(icon);
         f.addKeyListener(this);
     }
+
     //컴포너트팬 만드는 메소드
     private JPanel createContentPane() {
         topPanel = new JPanel(); //top-most JPanel in layout hierarchy
@@ -144,11 +145,11 @@ public class TopClass implements ActionListener, KeyListener {
         pgs = new PlayGameScreen(SCREEN_WIDTH, SCREEN_HEIGHT, true); //pgs 페널 설정
         topPanel.add(pgs);   //topPanel 패널 추가
 
-        //startGame.drawString("Life : " + Life,1);
 
         return topPanel;// topPanel 반환
     }
-    private void setRestartGame(){
+
+    private void setRestartGame() {
         //게임 다시 시작 버튼
         restartGame = new JButton("Replay");
         restartGame.setHorizontalAlignment(JButton.CENTER);
@@ -166,20 +167,20 @@ public class TopClass implements ActionListener, KeyListener {
         //현제 리스너의 리벤트 실행;
     }
 
+
     //작업 이벤트 구현
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == startGame) {
+        if (e.getSource() == startGame) {
             //startGame버튼을 클릭 했을 때 스크린 멈추고
             name = JOptionPane.showInputDialog("이름을 입력하세요.");
             System.out.println(name);
-            if(!(name.equals(null))){
+            if (!(name.equals(null))) {
                 loopVar = false;
                 fadeOperation();   //호출
             }
-        }else if(e.getSource() == restartGame){
+        } else if (e.getSource() == restartGame) {
             buildFrame();
-        }
-        else if(e.getSource() == buildComplete) {
+        } else if (e.getSource() == buildComplete) {
             //빌드가 완료 되었을때 파이프 루프 돌리고  게임 플레이 중으로 설정 이동 수행 함
             Thread t = new Thread() {
                 public void run() {
@@ -193,26 +194,25 @@ public class TopClass implements ActionListener, KeyListener {
     }
 
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE && gamePlay == true && released == true){
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && gamePlay == true && released == true) {
             //새 위치 이동
-            if(whaleThrust) { //더블 점프 여부
+            if (whaleThrust) { //더블 점프 여부
                 whaleFired = true;
             }
             whaleThrust = true;
             released = false;
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_B && gamePlay == false) {
-            whaleYTracker = SCREEN_HEIGHT/2 - WHALE_HEIGHT; //새 위치 재설정
+        } else if (e.getKeyCode() == KeyEvent.VK_B && gamePlay == false) {
+            whaleYTracker = SCREEN_HEIGHT / 2 - WHALE_HEIGHT; //새 위치 재설정
             whaleThrust = false; //점프키 리셋 (점프가 밀려서 발생하는 오류 방지)
             actionPerformed(new ActionEvent(startGame, -1, ""));
         }
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             System.exit(0);
         }
     }
 
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             released = true;
         }
     }
@@ -237,12 +237,11 @@ public class TopClass implements ActionListener, KeyListener {
 
                 long currentTime = System.currentTimeMillis();
 
-                while(temp.getBackground().getAlpha() != 255) {
-                    if((System.currentTimeMillis() - currentTime) > UPDATE_DIFFERENCE/2) {
-                        if(alpha < 255 - 10) {
+                while (temp.getBackground().getAlpha() != 255) {
+                    if ((System.currentTimeMillis() - currentTime) > UPDATE_DIFFERENCE / 2) {
+                        if (alpha < 255 - 10) {
                             alpha += 10;
-                        }
-                        else {
+                        } else {
                             alpha = 255;
                         }
 
@@ -260,12 +259,11 @@ public class TopClass implements ActionListener, KeyListener {
                 pgs.sendText(""); //remove title text
                 topPanel.add(pgs);
 
-                while(temp.getBackground().getAlpha() != 0) {
-                    if((System.currentTimeMillis() - currentTime) > UPDATE_DIFFERENCE/2) {
-                        if(alpha > 10) {
+                while (temp.getBackground().getAlpha() != 0) {
+                    if ((System.currentTimeMillis() - currentTime) > UPDATE_DIFFERENCE / 2) {
+                        if (alpha > 10) {
                             alpha -= 10;
-                        }
-                        else {
+                        } else {
                             alpha = 0;
                         }
 
@@ -294,30 +292,29 @@ public class TopClass implements ActionListener, KeyListener {
         Fish fish = new Fish(FISH_WIDTH, FISH_HEIGHT);
 
         //바닥 파이프의 x 및 y 이미지 위치를 추적하는 변수
-        int xLoc1 = SCREEN_WIDTH+SCREEN_DELAY, xLoc2 = (int) ((double) 3.0/2.0*SCREEN_WIDTH+ SEAWEED_WIDTH /2.0)+SCREEN_DELAY;
+        int xLoc1 = SCREEN_WIDTH + SCREEN_DELAY, xLoc2 = (int) ((double) 3.0 / 2.0 * SCREEN_WIDTH + SEAWEED_WIDTH / 2.0) + SCREEN_DELAY;
         int yLoc1 = bottomPipeLoc(), yLoc2 = bottomPipeLoc();
-        int fishx = xLoc1+FISH_WIDTH*4;
-        int fishy = yLoc1-FISH_HEIGHT;
+        int fishx = xLoc1 + FISH_WIDTH * 4;
+        int fishy = yLoc1 - FISH_HEIGHT;
         int birdX = WHALE_X_LOCATION, birdY = whaleYTracker;
 
         //루프 시작 시간을 유지할 변수
         long startTime = System.currentTimeMillis();
 
-        while(loopVar) {
-            if((System.currentTimeMillis() - startTime) > UPDATE_DIFFERENCE) {
+        while (loopVar) {
+            if ((System.currentTimeMillis() - startTime) > UPDATE_DIFFERENCE) {
                 //파이프 세트가 화면을 떠났는지 확인
                 //있는 경우 파이프의 X 위치를 재설정하고 새 Y 위치를 할당
-                if(xLoc1 < (0- SEAWEED_WIDTH)) {
+                if (xLoc1 < (0 - SEAWEED_WIDTH)) {
                     xLoc1 = SCREEN_WIDTH;
                     yLoc1 = bottomPipeLoc();
-                }
-                else if(xLoc2 < (0- SEAWEED_WIDTH)) {
+                } else if (xLoc2 < (0 - SEAWEED_WIDTH)) {
                     xLoc2 = SCREEN_WIDTH;
                     yLoc2 = bottomPipeLoc();
                 }
-                if(fishx < (0- SEAWEED_WIDTH)) {
-                    fishx = xLoc1+FISH_WIDTH*4;
-                    fishy = yLoc1-FISH_HEIGHT;
+                if (fishx < (0 - SEAWEED_WIDTH)) {
+                    fishx = xLoc1 + FISH_WIDTH * 4;
+                    fishy = yLoc1 - FISH_HEIGHT;
                 }
 
                 //파이프 위치를 미리 정해진 양만큼 줄임
@@ -325,29 +322,26 @@ public class TopClass implements ActionListener, KeyListener {
                 xLoc2 -= X_MOVEMENT_DIFFERENCE;
                 fishx -= X_MOVEMENT_DIFFERENCE;
 
-                if(whaleFired && !isSplash) {
+                if (whaleFired && !isSplash) {
                     whaleYTracker = birdY;
                     whaleFired = false;
                 }
 
-                if(whaleThrust && !isSplash) {
+                if (whaleThrust && !isSplash) {
                     //새 수직 이동
-                    if(whaleYTracker - birdY - WHALE_JUMP_DIFF < WHALE_JUMP_HEIGHT) {
-                        if(birdY - WHALE_JUMP_DIFF > 0) {
+                    if (whaleYTracker - birdY - WHALE_JUMP_DIFF < WHALE_JUMP_HEIGHT) {
+                        if (birdY - WHALE_JUMP_DIFF > 0) {
                             birdY -= WHALE_JUMP_DIFF; //coordinates different
-                        }
-                        else {
+                        } else {
                             birdY = 0;
                             whaleYTracker = birdY;
                             whaleThrust = false;
                         }
-                    }
-                    else {
+                    } else {
                         whaleYTracker = birdY;
                         whaleThrust = false;
                     }
-                }
-                else if(!isSplash) {
+                } else if (!isSplash) {
                     birdY += WHALE_FALL_DIFF;
                     whaleYTracker = birdY;
                 }
@@ -358,13 +352,13 @@ public class TopClass implements ActionListener, KeyListener {
                 bp2.setX(xLoc2);
                 bp2.setY(yLoc2);
                 tp1.setX(xLoc1);
-                tp1.setY(yLoc1- SEAWEED_GAP - SEAWEED_HEIGHT);
+                tp1.setY(yLoc1 - SEAWEED_GAP - SEAWEED_HEIGHT);
                 tp2.setX(xLoc2);
-                tp2.setY(yLoc2- SEAWEED_GAP - SEAWEED_HEIGHT);
+                tp2.setY(yLoc2 - SEAWEED_GAP - SEAWEED_HEIGHT);
                 fish.setX(fishx);
                 fish.setY(fishy);
 
-                if(!isSplash) {
+                if (!isSplash) {
                     whale.setX(birdX);
                     whale.setY(birdY);
                     pgs.setWhale(whale);
@@ -376,7 +370,7 @@ public class TopClass implements ActionListener, KeyListener {
                 pgs.setFish(fish);
 
 //	            //새가 화면에 나타나지 않는 오류 & 충돌 했을 시 해결을 위한 코드
-                if(!isSplash && whale.getWidth() != -1) {
+                if (!isSplash && whale.getWidth() != -1) {
                     collisionDetection(bp1, bp2, tp1, tp2, whale);   //파이프나 바닦에 부딪혔는지 확인
                     updateScore(bp1, bp2, whale);   // 파이프 통과 했을 때하는
                 }
@@ -396,8 +390,8 @@ public class TopClass implements ActionListener, KeyListener {
     private int bottomPipeLoc() {
         int temp = 0;
         //두 파이프를 모두 화면에 표시 할수 있을 때까지 반복
-        while(temp <= SEAWEED_GAP +50 || temp >= SCREEN_HEIGHT- SEAWEED_GAP) {
-            temp = (int) ((double) Math.random()*((double)SCREEN_HEIGHT));
+        while (temp <= SEAWEED_GAP + 50 || temp >= SCREEN_HEIGHT - SEAWEED_GAP) {
+            temp = (int) ((double) Math.random() * ((double) SCREEN_HEIGHT));
         }
         return temp;
     }
@@ -416,11 +410,10 @@ public class TopClass implements ActionListener, KeyListener {
      */
     // 점수 추가 하는 메소드
     private void updateScore(BottomSeaweed bp1, BottomSeaweed bp2, Whale bird) {
-        if(bp1.getX() + SEAWEED_WIDTH < bird.getX() && bp1.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
+        if (bp1.getX() + SEAWEED_WIDTH < bird.getX() && bp1.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
             pgs.incrementJump();
             score++;
-        }
-        else if(bp2.getX() + SEAWEED_WIDTH < bird.getX() && bp2.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
+        } else if (bp2.getX() + SEAWEED_WIDTH < bird.getX() && bp2.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
             pgs.incrementJump();
             score++;
         }
@@ -440,7 +433,7 @@ public class TopClass implements ActionListener, KeyListener {
         collisionHelper(whale.getRectangle(), tp1.getRectangle(), whale.getBI(), tp1.getBI());
         collisionHelper(whale.getRectangle(), tp2.getRectangle(), whale.getBI(), tp2.getBI());
 
-        if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT-50) { //바닦에 부딪혔을 때
+        if (whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT - 50) { //바닦에 부딪혔을 때
             restart();
         }
     }
@@ -453,7 +446,7 @@ public class TopClass implements ActionListener, KeyListener {
      */
     //pipe와 Bird 충돌을 테스트
     private void collisionHelper(Rectangle r1, Rectangle r2, BufferedImage b1, BufferedImage b2) {
-        if(r1.intersects(r2)) {
+        if (r1.intersects(r2)) {
             Rectangle r = r1.intersection(r2);
 
             int firstI = (int) (r.getMinX() - r1.getMinX());
@@ -461,32 +454,33 @@ public class TopClass implements ActionListener, KeyListener {
             int bp1XHelper = (int) (r1.getMinX() - r2.getMinX());
             int bp1YHelper = (int) (r1.getMinY() - r2.getMinY());
             //충돌 확인
-            int crash =1;
-            for(int i = firstI; i < r.getWidth() + firstI; i++) {
-                for(int j = firstJ; j < r.getHeight() + firstJ; j++) {
-                    if((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
+            int crash = 1;
+            for (int i = firstI; i < r.getWidth() + firstI; i++) {
+                for (int j = firstJ; j < r.getHeight() + firstJ; j++) {
+                    if ((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
                         crash--;
                         break;
                     }
                 }
-                if(crash==0){
+                if (crash == 0) {
                     restart();
                     break;
                 }
             }
         }
     }
-    private void restart(){
+
+    private void restart() {
         pgs.sendText("Game Over");
         restartGame.addActionListener(this);
         topPanel.add(restartGame);
         loopVar = false; //충돌시 루프를 멈추고
         gamePlay = false; //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
-        try{
+        try {
             Connection connection = DriverManager.getConnection(url, userName, password);
             Statement stmt = connection.createStatement();
-            stmt.executeUpdate(" INSERT INTO user_scoer_tabel(user_name,user_scoer)  VALUES ('"+name+"', '"+score+"')");
-        }catch (SQLException e){
+            stmt.executeUpdate(" INSERT INTO user_scoer_tabel(user_name,user_scoer)  VALUES ('" + name + "', '" + score + "')");
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }

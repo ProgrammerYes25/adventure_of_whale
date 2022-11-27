@@ -15,12 +15,13 @@ public class PlayGameScreen extends JPanel {
     private boolean isSplash = true;
     private int successfulJumps = 0;
     private String message = "Whale Adventures";
-    private Font primaryFont = new Font("BLOMBERG", Font.BOLD, 100), failFont = new Font("BLOMBERG", Font.BOLD, 56);
-    private int messageWidth = 0, scoreWidth = 0;
+    private Font primaryFont = new Font("BLOMBERG", Font.BOLD, 100),  failFont = new Font("BLOMBERG", Font.BOLD, 56),lifeFont = new Font("BLOMBERG", Font.BOLD, 10);
+    private int messageWidth = 0, scoreWidth = 0, lifeWidth = 0;
     private BottomSeaweed bp1, bp2;
     private TopSeaweed tp1, tp2;
     private Fish fish;
     private Whale whale;
+    private int life=1;
 
 
 
@@ -59,17 +60,24 @@ public class PlayGameScreen extends JPanel {
             messageWidth = metric.stringWidth(message);
             scoreWidth = metric.stringWidth(String.format("%d", successfulJumps));
         }
-        catch(Exception e) {
+        catch (Exception e) {
             g.setFont(failFont);
             FontMetrics metric = g.getFontMetrics(failFont);
             messageWidth = metric.stringWidth(message);
             scoreWidth = metric.stringWidth(String.format("%d", successfulJumps));
         }
 
+        /*g.setFont(lifeFont);
+        FontMetrics metric = g.getFontMetrics(lifeFont);
+        messageWidth = metric.stringWidth(message);
+        scoreWidth = metric.stringWidth(String.format("%d", successfulJumps));*/
+
+
         g.drawString(message, screenWidth/2-messageWidth/2, screenHeight/3);
 
         if(!isSplash) {
             g.drawString(String.format("%d", successfulJumps), screenWidth/2-scoreWidth/2, 100);
+            g.drawString("Life:"+ life, 5, 100);
         }
     }
 
