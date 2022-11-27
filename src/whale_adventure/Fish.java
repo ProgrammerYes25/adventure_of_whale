@@ -26,8 +26,6 @@ public class Fish {
     public void scaleFish(int width, int height) {
 
         fish = fish.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
-
         Random rnd = new Random();
     }
     public Image getFish() {
@@ -86,6 +84,8 @@ public class Fish {
         BufferedImage bi = new BufferedImage(fish.getWidth(null), fish.getHeight(null),
                 BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.getGraphics();
+        g.drawImage(fish, 0, 0, null);
+        g.dispose();
         return bi;
     }
 }

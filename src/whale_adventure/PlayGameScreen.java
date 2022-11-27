@@ -80,7 +80,6 @@ public class PlayGameScreen extends JPanel {
             g.drawString("Life:"+ life, 5, 100);
         }
     }
-
     //PlayGameScreen의 BottomPipe 변수 값 지정
     public void setBottomSeaweed(BottomSeaweed bp1, BottomSeaweed bp2) {
         this.bp1 = bp1;
@@ -105,6 +104,8 @@ public class PlayGameScreen extends JPanel {
     public void incrementJump() {
         successfulJumps++;
     }
+
+    public void incrementLife(){life++;}
 
     // 현재 점프 점수를 반환
     public int getScore() {

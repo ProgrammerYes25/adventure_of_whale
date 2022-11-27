@@ -76,6 +76,8 @@ public class TopClass implements ActionListener, KeyListener {
     private int Life = 1, score = 0;
     private String name = null;
 
+    private int seaweedCount = 0;
+
     //기본 생성자
     public TopClass() {
 
@@ -308,19 +310,25 @@ public class TopClass implements ActionListener, KeyListener {
                 if (xLoc1 < (0 - SEAWEED_WIDTH)) {
                     xLoc1 = SCREEN_WIDTH;
                     yLoc1 = bottomPipeLoc();
+                    seaweedCount++;
                 } else if (xLoc2 < (0 - SEAWEED_WIDTH)) {
                     xLoc2 = SCREEN_WIDTH;
                     yLoc2 = bottomPipeLoc();
+                    seaweedCount++;
                 }
-                if (fishx < (0 - SEAWEED_WIDTH)) {
+                if (fishx < (0 - SEAWEED_WIDTH) && seaweedCount==3) {
                     fishx = xLoc1 + FISH_WIDTH * 4;
                     fishy = yLoc1 - FISH_HEIGHT;
+                    seaweedCount=0;
                 }
+
 
                 //파이프 위치를 미리 정해진 양만큼 줄임
                 xLoc1 -= X_MOVEMENT_DIFFERENCE;
                 xLoc2 -= X_MOVEMENT_DIFFERENCE;
-                fishx -= X_MOVEMENT_DIFFERENCE;
+                if (fishx >= (0 - SEAWEED_WIDTH)) {
+                    fishx -= X_MOVEMENT_DIFFERENCE;
+                }
 
                 if (whaleFired && !isSplash) {
                     whaleYTracker = birdY;
@@ -358,6 +366,7 @@ public class TopClass implements ActionListener, KeyListener {
                 fish.setX(fishx);
                 fish.setY(fishy);
 
+
                 if (!isSplash) {
                     whale.setX(birdX);
                     whale.setY(birdY);
@@ -369,10 +378,12 @@ public class TopClass implements ActionListener, KeyListener {
                 pgs.setTopSeaweed(tp1, tp2);
                 pgs.setFish(fish);
 
-//	            //새가 화면에 나타나지 않는 오류 & 충돌 했을 시 해결을 위한 코드
+
+//               //새가 화면에 나타나지 않는 오류 & 충돌 했을 시 해결을 위한 코드
                 if (!isSplash && whale.getWidth() != -1) {
                     collisionDetection(bp1, bp2, tp1, tp2, whale);   //파이프나 바닦에 부딪혔는지 확인
                     updateScore(bp1, bp2, whale);   // 파이프 통과 했을 때하는
+                    addLife(whale.getRectangle(), fish.getRectangle(), whale.getBI(), fish.getBI(), fish);
                 }
 
                 //pgs의 패널 업데이트
@@ -416,6 +427,36 @@ public class TopClass implements ActionListener, KeyListener {
         } else if (bp2.getX() + SEAWEED_WIDTH < bird.getX() && bp2.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
             pgs.incrementJump();
             score++;
+        }
+    }
+
+    private void addLife(Rectangle r1, Rectangle r2, BufferedImage b1, BufferedImage b2, Fish fish) {
+        if (r1.intersects(r2)) {
+            Rectangle r = r1.intersection(r2);
+
+            int firstI = (int) (r.getMinX() - r1.getMinX());
+            int firstJ = (int) (r.getMinY() - r1.getMinY());
+            int bp1XHelper = (int) (r1.getMinX() - r2.getMinX());
+            int bp1YHelper = (int) (r1.getMinY() - r2.getMinY());
+            //충돌 확인
+            if(seaweedCount==0) {
+                int crash = 1;
+                for (int i = firstI; i < r.getWidth() + firstI; i++) {
+                    for (int j = firstJ; j < r.getHeight() + firstJ; j++) {
+                        if ((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
+                            crash--;
+                            break;
+                        }
+                    }
+                    if (crash == 0) {
+                        fish.setX((0 - SEAWEED_WIDTH) + 1);
+                        seaweedCount=1;
+                        pgs.setFish(fish);
+                        pgs.incrementLife();
+                        break;
+                    }
+                }
+            }
         }
     }
 
