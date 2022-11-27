@@ -1,13 +1,17 @@
 package whale_adventure;
 
+import com.mysql.cj.conf.PropertyDefinitions;
 import com.mysql.cj.x.protobuf.MysqlxSql;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class test {
+public class test extends JFrame{
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         String url = "jdbc:mysql://127.0.0.1/?useSSL=false&user=root&password=mirim";
         String userName = "root";
@@ -26,4 +30,5 @@ public class test {
         stmt.close();
         connection.close();
     }
+
 }

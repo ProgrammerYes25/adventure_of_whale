@@ -25,7 +25,7 @@ public class DBHelper {
             stmt.close();
             connection.close();
         } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
+            System.out.print(e);
         }
     }
 }

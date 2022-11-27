@@ -1,11 +1,17 @@
 package whale_adventure;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.*;
 
@@ -65,8 +71,12 @@ public class TopClass implements ActionListener, KeyListener {
     private static TopClass tc = new TopClass();
     //게임을 시작할 때 움직이는 배경이 있는 패널
     private static PlayGameScreen pgs;
+    private String url = "jdbc:mysql://localhost/AdaventureOfWhaleDB?serverTimezone=UTC";
+    private String userName = "root";
+    private String password = "mirim";
 
-    private int Life;
+    private int Life, score=0;
+    private String name =null;
 
     //기본 생성자
     public TopClass() {
@@ -75,6 +85,7 @@ public class TopClass implements ActionListener, KeyListener {
 
     //메인메소드
     public static void main(String[] args) {
+        DBHelper db = new DBHelper();
         //GUI구축
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -161,8 +172,12 @@ public class TopClass implements ActionListener, KeyListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == startGame) {
             //startGame버튼을 클릭 했을 때 스크린 멈추고
-            loopVar = false;
-            fadeOperation();   //호출
+            name = JOptionPane.showInputDialog("이름을 입력하세요.");
+            System.out.println(name);
+            if(!(name.equals(null))){
+                loopVar = false;
+                fadeOperation();   //호출
+            }
         }else if(e.getSource() == restartGame){
             buildFrame();
         }
@@ -398,9 +413,11 @@ public class TopClass implements ActionListener, KeyListener {
     private void updateScore(BottomSeaweed bp1, BottomSeaweed bp2, Whale bird) {
         if(bp1.getX() + SEAWEED_WIDTH < bird.getX() && bp1.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
             pgs.incrementJump();
+            score++;
         }
         else if(bp2.getX() + SEAWEED_WIDTH < bird.getX() && bp2.getX() + SEAWEED_WIDTH > bird.getX() - X_MOVEMENT_DIFFERENCE) {
             pgs.incrementJump();
+            score++;
         }
     }
 
@@ -439,12 +456,17 @@ public class TopClass implements ActionListener, KeyListener {
             int bp1XHelper = (int) (r1.getMinX() - r2.getMinX());
             int bp1YHelper = (int) (r1.getMinY() - r2.getMinY());
             //충돌 확인
+            int crash =1;
             for(int i = firstI; i < r.getWidth() + firstI; i++) {
                 for(int j = firstJ; j < r.getHeight() + firstJ; j++) {
                     if((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
-                        restart();
+                        crash--;
                         break;
                     }
+                }
+                if(crash==0){
+                    restart();
+                    break;
                 }
             }
         }
@@ -455,6 +477,13 @@ public class TopClass implements ActionListener, KeyListener {
         topPanel.add(restartGame);
         loopVar = false; //충돌시 루프를 멈추고
         gamePlay = false; //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
+        try{
+            Connection connection = DriverManager.getConnection(url, userName, password);
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(" INSERT INTO user_scoer_tabel(user_name,user_scoer)  VALUES ('"+name+"', '"+score+"')");
+        }catch (SQLException e){
+            System.out.println(e);
+        }
     }
 
 

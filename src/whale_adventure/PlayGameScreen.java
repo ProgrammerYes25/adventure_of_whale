@@ -22,6 +22,8 @@ public class PlayGameScreen extends JPanel {
     private Fish fish;
     private Whale whale;
 
+
+
     //기본 생성자
     public PlayGameScreen(int screenWidth, int screenHeight, boolean isSplash) {
         this.screenWidth = screenWidth;
