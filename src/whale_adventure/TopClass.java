@@ -433,7 +433,7 @@ public class TopClass implements ActionListener, KeyListener {
         collisionHelper(whale.getRectangle(), tp1.getRectangle(), whale.getBI(), tp1.getBI());
         collisionHelper(whale.getRectangle(), tp2.getRectangle(), whale.getBI(), tp2.getBI());
 
-        if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT+50) { //바닦에 부딪혔을 때
+        if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT-50) { //바닦에 부딪혔을 때
             restart();
         }
     }
