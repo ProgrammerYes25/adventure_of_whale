@@ -1,7 +1,5 @@
 package whale_adventure;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -152,7 +150,7 @@ public class TopClass implements ActionListener, KeyListener {
     }
     private void setRestartGame(){
         //게임 다시 시작 버튼
-        restartGame = new JButton("Start");
+        restartGame = new JButton("Replay");
         restartGame.setHorizontalAlignment(JButton.CENTER);
 
         //버튼 색깔 설정
@@ -435,7 +433,7 @@ public class TopClass implements ActionListener, KeyListener {
         collisionHelper(whale.getRectangle(), tp1.getRectangle(), whale.getBI(), tp1.getBI());
         collisionHelper(whale.getRectangle(), tp2.getRectangle(), whale.getBI(), tp2.getBI());
 
-        if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT*999/1000) { //바닦에 부딪혔을 때
+        if(whale.getY() + WHALE_HEIGHT > SCREEN_HEIGHT+50) { //바닦에 부딪혔을 때
             restart();
         }
     }
