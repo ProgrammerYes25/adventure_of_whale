@@ -49,9 +49,9 @@ public class PlayGameScreen extends JPanel {
         if(fish != null) {
             g.drawImage(fish.getFish(), fish.getX(), fish.getY(), null);
         }
-      if(!isSplash && whale != null) {
-         g.drawImage(whale.getWhale(), whale.getX(), whale.getY(), null);
-      }
+        if(!isSplash && whale != null) {
+            g.drawImage(whale.getWhale(), whale.getX(), whale.getY(), null);
+        }
 
         //주 글꼴이 없는 경우
         try {

@@ -6,10 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import javax.swing.*;
 
@@ -64,7 +61,7 @@ public class TopClass implements ActionListener, KeyListener {
     private JFrame f = new JFrame("Whale Adventures");//프라임 생성 타이틀은 "Whale Adventures"
     private JButton startGame, restartGame;//게임 시작 버튼
     private JPanel topPanel; //declared globally to accommodate the repaint operation and allow for removeAll(), etc.
-
+    private scoreDialog dialog;
     //지역 그리드 객체
     private static TopClass tc = new TopClass();
     //게임을 시작할 때 움직이는 배경이 있는 패널
@@ -76,7 +73,7 @@ public class TopClass implements ActionListener, KeyListener {
     private int Life = 1, score = 0;
     private String name = null;
 
-    private int seaweedCount = 0, crashCount=1;
+    private int seaweedCount = 0, crashCount=2;
 
     //기본 생성자
     public TopClass() {
@@ -146,7 +143,8 @@ public class TopClass implements ActionListener, KeyListener {
         setRestartGame();
         pgs = new PlayGameScreen(SCREEN_WIDTH, SCREEN_HEIGHT, true); //pgs 페널 설정
         topPanel.add(pgs);   //topPanel 패널 추가
-
+        dialog = new scoreDialog(f, "score");
+        dialog.setVisible(false);
 
         return topPanel;// topPanel 반환
     }
@@ -453,7 +451,7 @@ public class TopClass implements ActionListener, KeyListener {
                     }
                     if (crash == 0) {
                         fish.setX((0 - SEAWEED_WIDTH) + 1);
-                        seaweedCount=1;
+                        seaweedCount=2;
                         pgs.setFish(fish);
                         pgs.incrementLife();
                         break;
@@ -525,13 +523,25 @@ public class TopClass implements ActionListener, KeyListener {
         topPanel.add(restartGame);
         loopVar = false; //충돌시 루프를 멈추고
         gamePlay = false; //게임도 멈춰지게 됨 (여기에 스코어랑 다시시작이랑 홈으로 돌아가는 코드 필요)
+        String line = "_____________________________________";
+        String scoret = name+"의 기록 : "+score+"\n"+line+"\n 등수\t| 이름\t| 점수\n";
+        int num=1;
         try {
             Connection connection = DriverManager.getConnection(url, userName, password);
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(" INSERT INTO user_scoer_tabel(user_name,user_scoer)  VALUES ('" + name + "', '" + score + "')");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM user_scoer_tabel ORDER BY user_scoer DESC;");
+            while(num<=10&&rs.next()){
+                scoret+=" "+num++;
+                scoret+= "\t| "+rs.getString(1)+"\t| "+rs.getString(2)+"\n";
+            }
+
         } catch (SQLException e) {
             System.out.println(e);
         }
+        dialog.setScoreTest(scoret);
+        dialog.setVisible(true);
+
     }
 
 
