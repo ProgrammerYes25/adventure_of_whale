@@ -73,7 +73,7 @@ public class TopClass implements ActionListener, KeyListener {
     private int Life = 1, score = 0;
     private String name = null;
 
-    private int seaweedCount = 0,  crashCount=2, crashCount1=0, crashCount2=0;
+    private int seaweedCount = 0,countFish =1,  crashCount=2, crashCount1=0, crashCount2=0;
 
     //기본 생성자
     public TopClass() {
@@ -310,24 +310,23 @@ public class TopClass implements ActionListener, KeyListener {
             if ((System.currentTimeMillis() - startTime) > UPDATE_DIFFERENCE) {
                 //파이프 세트가 화면을 떠났는지 확인
                 //있는 경우 파이프의 X 위치를 재설정하고 새 Y 위치를 할당
-                if (xLoc1 < (0 - SEAWEED_WIDTH)) {
+                if (xLoc1 < (0 - SEAWEED_WIDTH+1)) {
                     xLoc1 = SCREEN_WIDTH;
                     yLoc1 = bottomPipeLoc();
-                    seaweedCount++;
+                    if(seaweedCount<10){seaweedCount++;}
                    crashCount1=0;
-                } else if (xLoc2 < (0 - SEAWEED_WIDTH)) {
+                } else if (xLoc2 < (0 - SEAWEED_WIDTH-1)) {
                     xLoc2 = SCREEN_WIDTH;
                     yLoc2 = bottomPipeLoc();
-                    seaweedCount++;
+                    if(seaweedCount<10){seaweedCount++;}
                    crashCount2=0;
                 }
-                if (fishx < (0 - SEAWEED_WIDTH) && seaweedCount==10) {
+//                if (fishx < (0 - SEAWEED_WIDTH-1) && seaweedCount==10) {
+                if (seaweedCount==10) {
                     fishx = xLoc1 + FISH_WIDTH * 4;
                     fishy = yLoc1 - FISH_HEIGHT;
+                    countFish=1;
                     seaweedCount=0;
-                }
-                if(fishx >= (0 - SEAWEED_WIDTH)&&seaweedCount<10){
-                    fish.setX((0 - SEAWEED_WIDTH) + 1);
                 }
 
 
@@ -371,8 +370,10 @@ public class TopClass implements ActionListener, KeyListener {
                 tp1.setY(yLoc1 - SEAWEED_GAP - SEAWEED_HEIGHT);
                 tp2.setX(xLoc2);
                 tp2.setY(yLoc2 - SEAWEED_GAP - SEAWEED_HEIGHT);
-                fish.setX(fishx);
-                fish.setY(fishy);
+                if (countFish !=0) {
+                    fish.setX(fishx);
+                    fish.setY(fishy);
+                }
 
 
                 if (!isSplash) {
@@ -457,10 +458,13 @@ public class TopClass implements ActionListener, KeyListener {
                         }
                     }
                     if (crash == 0) {
-                        fish.setX((0 - SEAWEED_WIDTH) + 1);
+                        fish.setX((0 - SEAWEED_WIDTH));
                         seaweedCount=2;
+                        countFish=0;
                         pgs.setFish(fish);
                         pgs.incrementLife();
+                        System.out.println("(0 - SEAWEED_WIDTH)+1"+((0 - SEAWEED_WIDTH)-1));
+                        System.out.println("(0 - SEAWEED_WIDTH)"+(0 - SEAWEED_WIDTH));
                         break;
                     }
                 }
@@ -537,6 +541,7 @@ public class TopClass implements ActionListener, KeyListener {
         crashCount2=0;
         crashCount =2;
         seaweedCount=0;
+        countFish=1;
         restartGame.addActionListener(this);
         topPanel.add(restartGame);
         loopVar = false; //충돌시 루프를 멈추고
