@@ -73,7 +73,7 @@ public class TopClass implements ActionListener, KeyListener {
     private int Life = 1, score = 0;
     private String name = null;
 
-    private int seaweedCount = 0, crashCount=2;
+    private int seaweedCount = 0,  crashCount=2, crashCount1=0, crashCount2=0;
 
     //기본 생성자
     public TopClass() {
@@ -176,11 +176,13 @@ public class TopClass implements ActionListener, KeyListener {
             System.out.println(name);
             if (!(name.equals(null))) {
                 loopVar = false;
+                score=0;
                 fadeOperation();   //호출
             }
         } else if (e.getSource() == restartGame) {
             buildFrame();
         } else if (e.getSource() == buildComplete) {
+
             //빌드가 완료 되었을때 파이프 루프 돌리고  게임 플레이 중으로 설정 이동 수행 함
             Thread t = new Thread() {
                 public void run() {
@@ -312,15 +314,20 @@ public class TopClass implements ActionListener, KeyListener {
                     xLoc1 = SCREEN_WIDTH;
                     yLoc1 = bottomPipeLoc();
                     seaweedCount++;
+                   crashCount1=0;
                 } else if (xLoc2 < (0 - SEAWEED_WIDTH)) {
                     xLoc2 = SCREEN_WIDTH;
                     yLoc2 = bottomPipeLoc();
                     seaweedCount++;
+                   crashCount2=0;
                 }
-                if (fishx < (0 - SEAWEED_WIDTH) && seaweedCount==3) {
+                if (fishx < (0 - SEAWEED_WIDTH) && seaweedCount==10) {
                     fishx = xLoc1 + FISH_WIDTH * 4;
                     fishy = yLoc1 - FISH_HEIGHT;
                     seaweedCount=0;
+                }
+                if(fishx >= (0 - SEAWEED_WIDTH)&&seaweedCount<10){
+                    fish.setX((0 - SEAWEED_WIDTH) + 1);
                 }
 
 
@@ -497,20 +504,28 @@ public class TopClass implements ActionListener, KeyListener {
             int bp1YHelper = (int) (r1.getMinY() - r2.getMinY());
             //충돌 확인
             int crash = 1;
-            for (int i = firstI; i < r.getWidth() + firstI; i++) {
-                for (int j = firstJ; j < r.getHeight() + firstJ; j++) {
-                    if ((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
-                        crash--;
+            if(crashCount1 ==0 || crashCount2 ==0){
+                for (int i = firstI; i < r.getWidth() + firstI; i++) {
+                    for (int j = firstJ; j < r.getHeight() + firstJ; j++) {
+                        if ((b1.getRGB(i, j) & 0xFF000000) != 0x00 && (b2.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
+                            crash--;
+                            break;
+                        }
+                    }
+                    if (crash == 0&& crashCount ==0) {
+                        if(crashCount1==0) {
+                            crashCount1 = 1;
+                        }else if (crashCount2 == 0)
+                        {
+                            crashCount2 = 1;
+                        }
+                        crashCount = 4;
+                        pgs.reductionLife();
+                        if(pgs.life==0){
+                            restart();
+                        }
                         break;
                     }
-                }
-                if (crash == 0 && crashCount ==0) {
-                    crashCount = 2;
-                    pgs.reductionLife();
-                    if(pgs.life==0){
-                        restart();
-                    }
-                    break;
                 }
             }
         }
@@ -518,7 +533,10 @@ public class TopClass implements ActionListener, KeyListener {
 
     private void restart() {
         pgs.sendText("Game Over");
-        crashCount=1;
+        crashCount1=0;
+        crashCount2=0;
+        crashCount =2;
+        seaweedCount=0;
         restartGame.addActionListener(this);
         topPanel.add(restartGame);
         loopVar = false; //충돌시 루프를 멈추고
@@ -541,7 +559,6 @@ public class TopClass implements ActionListener, KeyListener {
         }
         dialog.setScoreTest(scoret);
         dialog.setVisible(true);
-
     }
 
 
